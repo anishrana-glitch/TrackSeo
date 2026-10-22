@@ -121,54 +121,64 @@ The codebase has completed Stages A through I of its architecture roadmap, culmi
 The platform follows a layered, decoupled architecture separating client rendering, REST endpoints, defensive security middleware, domain business logic, and dual-mode data persistence.
 
 ```mermaid
-graph TB
-    subgraph Client ["Frontend Workspace (React 19 + Vite)"]
-        UI[Brutalist Design System]
-        Nav[Collapsible Sidebar Navigation]
-        AuditView[Site Audits & Signal View]
-        CrawlView[Crawl Explorer]
-        LabView[Experiments Lab]
-        SettingsView[Diagnostics & Settings]
-        ApiClient[Typed API Client (api.ts)]
+flowchart TB
+    subgraph Client["Frontend Workspace (React 19 + Vite)"]
+        UI["Brutalist Design System"]
+        Nav["Collapsible Sidebar Navigation"]
+        AuditView["Site Audits and Signal View"]
+        CrawlView["Crawl Explorer"]
+        LabView["Experiments Lab"]
+        SettingsView["Diagnostics and Settings"]
+        ApiClient["Typed API Client (api.ts)"]
+        UI --> Nav
+        Nav --> AuditView
+        Nav --> CrawlView
+        Nav --> LabView
+        Nav --> SettingsView
+        AuditView --> ApiClient
+        CrawlView --> ApiClient
+        LabView --> ApiClient
+        SettingsView --> ApiClient
     end
 
-    subgraph Backend ["TrackSeo Backend Engine (Express 5 + TS ESM)"]
-        Router[Express Routing Layer]
-        SSRF[SSRF Security Gatekeeper (ipaddr.js + dns)]
-        FetchStream[Chunked Stream Fetcher (1MB Cap)]
-        CheerioParser[Cheerio HTML Parser]
-        CwvEngine[Core Web Vitals Modeling]
-        CrawlerSvc[Bounded BFS Crawler Service]
-        AiSvc[Gemini AI Engine (@google/genai)]
-        ExpSvc[A/B Hypothesis Engine]
-        HistSvc[Audit History Service]
-        ExportSvc[Report Export Generator (JSON/CSV/HTML)]
+    subgraph Backend["TrackSeo Backend Engine (Express 5 + TypeScript ESM)"]
+        Router["Express Routing Layer"]
+        SSRF["SSRF Security Gatekeeper (ipaddr.js and DNS)"]
+        FetchStream["Chunked Stream Fetcher (1 MB Cap)"]
+        CheerioParser["Cheerio HTML Parser"]
+        CwvEngine["Core Web Vitals Modeling"]
+        CrawlerSvc["Bounded BFS Crawler Service"]
+        AiSvc["Gemini AI Engine"]
+        ExpSvc["A/B Hypothesis Engine"]
+        HistSvc["Audit History Service"]
+        ExportSvc["Report Export Generator (JSON, CSV, HTML)"]
+        Router --> SSRF
+        SSRF --> FetchStream
+        FetchStream --> CheerioParser
+        CheerioParser --> CwvEngine
+        CwvEngine --> HistSvc
+        Router --> CrawlerSvc
+        Router --> AiSvc
+        Router --> ExpSvc
+        Router --> ExportSvc
     end
 
-    subgraph External ["External Services & Targets"]
-        TargetWeb[Target Websites (Public Web)]
-        Atlas[(MongoDB Atlas Cluster)]
-        GeminiApi[Google Gemini 2.5 Flash API]
-        BbaseApi[Browserbase Headless Cloud]
+    subgraph External["External Services and Targets"]
+        TargetWeb["Target Websites (Public Web)"]
+        Atlas[("MongoDB Atlas Cluster")]
+        GeminiApi["Google Gemini API"]
+        BbaseApi["Browserbase Headless Cloud"]
+        MemStore[("In-Memory FIFO Buffer")]
     end
 
     UI --> ApiClient
-    ApiClient -->|REST HTTP / JSON| Router
-    Router --> SSRF
-    SSRF -->|Validated Public URL| FetchStream
-    FetchStream -->|Streaming GET| TargetWeb
-    FetchStream --> CheerioParser
-    CheerioParser --> CwvEngine
-    CwvEngine --> HistSvc
-    Router --> CrawlerSvc
-    CrawlerSvc -->|Static Mode| FetchStream
-    CrawlerSvc -->|Render Mode| BbaseApi
-    Router --> AiSvc
-    AiSvc -->|Structured JSON Prompt| GeminiApi
-    Router --> ExpSvc
-    Router --> ExportSvc
-    HistSvc -->|Primary| Atlas
-    HistSvc -.->|Graceful Fallback| MemStore[(In-Memory FIFO Buffer)]
+    ApiClient -->|"REST HTTP and JSON"| Router
+    FetchStream -->|"Streaming GET"| TargetWeb
+    CrawlerSvc -->|"Static Mode"| FetchStream
+    CrawlerSvc -->|"Render Mode"| BbaseApi
+    AiSvc -->|"Structured JSON Prompt"| GeminiApi
+    HistSvc -->|"Primary Persistence"| Atlas
+    HistSvc -.->|"Graceful Fallback"| MemStore
 ```
 
 ---

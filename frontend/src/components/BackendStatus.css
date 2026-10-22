@@ -1,0 +1,55 @@
+.status-badge-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.backend-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  padding: 6px 10px;
+  border: 1px solid currentColor;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+}
+
+.backend-status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.backend-status--checking {
+  color: #a0a0a0;
+}
+
+.backend-status--connected {
+  color: #c7ff38;
+}
+
+.backend-status--offline {
+  color: #ff6868;
+}
+
+.backend-status--db-connected {
+  color: #c7ff38;
+}
+
+.backend-status--db-not_configured {
+  color: #e0a845;
+}
+
+.backend-status--db-disconnected {
+  color: #ff6868;
+}
+
+.backend-status--db-connecting {
+  color: #888888;
+}

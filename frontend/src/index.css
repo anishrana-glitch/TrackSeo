@@ -1,0 +1,68 @@
+
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f4f0e8;
+  background: #101010;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  color: #101010;
+  background: #c7ff38;
+}
+
+/* Brutalist Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #101010;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2b2b;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c7ff38;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2b2b2b #101010;
+}
